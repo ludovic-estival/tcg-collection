@@ -1,8 +1,6 @@
 # Database
 
-Requirements:
-- [MySQL](https://dev.mysql.com/doc/mysql-getting-started/en/)
-- `pip install mysql-connector-python`
+Fichiers à supprimer
 
 Files:
 - `config.py`: configuration file with connector

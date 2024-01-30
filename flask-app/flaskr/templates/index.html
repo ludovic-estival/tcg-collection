@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}My collection{% endblock %}
+
+
+
+{% block content %}
+    <h2>My collection</h2>
+    Card(s) in my collection: {{ count }}
+
+    <table>
+        <tr>
+            <th>Code</th>
+            <th>Rarity</th>
+            <th>Name</th>
+            <th>Price</th>  
+        </tr>
+        {% for card in cards %}
+            <tr>
+                <td>{{ card['code'] }}</td>
+                <td>{{ card['rarity'] }}</td>
+                <td>{{ card['name'] }}</td>
+                <td>{{ card['price'] }}</td>
+            </tr>
+        {% endfor %}
+
+    </table>
+    
+{% endblock %}
