@@ -18,12 +18,21 @@ def get_card(code, rarity):
 
     return card
 
+# Get the value of the entire collection
+def get_collection_value():
+    value = get_db().execute(
+        'SELECT SUM(price * nbcopy) AS value FROM card'
+    ).fetchone()
+
+    return value['value']
+
 # Index page
 @bp.route('/')
 def view_cards():
     db = get_db()
     cards = db.execute('SELECT * FROM card ORDER BY name ASC').fetchall()
-    return render_template('index.html', cards=cards, count=len(cards))
+    value = get_collection_value()
+    return render_template('index.html', cards=cards, count=len(cards), value=value)
 
 
 # Add a card form
