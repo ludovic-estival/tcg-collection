@@ -7,3 +7,4 @@ Usefull commands:
 
 Folders:
 - `flask-app`: Flask project
+- `price-tracker`: Experimental scripts to track collection price
