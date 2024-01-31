@@ -1,7 +1,7 @@
 import functools
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, request, session, url_for, abort
 )
 
 from flaskr.db import get_db
@@ -9,14 +9,12 @@ from flaskr.db import get_db
 bp = Blueprint('cards', __name__)
 
 # Get a card from code and rarity
+# Return card object or None
 def get_card(code, rarity):
     card = get_db().execute(
         'SELECT * FROM card WHERE code = ? AND rarity = ?',
         (code, rarity)
     ).fetchone()
-
-    if card is None:
-        abort(404, f"Card id {code} and rarity {rarity} doesn't exist.")
 
     return card
 
@@ -39,18 +37,25 @@ def create():
         nbcopy = request.form['nbcopy']
         db = get_db()
 
-        if not price:
+        if get_card(code, rarity):
             db.execute(
-                'INSERT INTO card (code, rarity, name, nbcopy)'
-                ' VALUES (?, ?, ?, ?)',
-                (code, rarity, name)
-            )
+                'UPDATE card SET nbcopy = nbcopy + 1'
+                ' WHERE code = ? and rarity = ?',
+                (code, rarity))
         else:
-            db.execute(
-                'INSERT INTO card (code, rarity, name, price, nbcopy)'
-                ' VALUES (?, ?, ?, ?, ?)',
-                (code, rarity, name, price)
-            )
+
+            if not price:
+                db.execute(
+                    'INSERT INTO card (code, rarity, name, nbcopy)'
+                    ' VALUES (?, ?, ?, ?)',
+                    (code, rarity, name, nbcopy)
+                )
+            else:
+                db.execute(
+                    'INSERT INTO card (code, rarity, name, price, nbcopy)'
+                    ' VALUES (?, ?, ?, ?, ?)',
+                    (code, rarity, name, price, nbcopy)
+                )
             
         db.commit()
         return redirect('/')
@@ -72,13 +77,13 @@ def update(code, rarity):
             db.execute(
                 'UPDATE card SET name = ?, nbcopy = ?'
                 ' WHERE code = ? and rarity = ?',
-                (name, code, rarity)
+                (name, nbcopy, code, rarity)
             )
         else:
             db.execute(
                 'UPDATE card SET name = ?, price = ?, nbcopy = ?'
                 ' WHERE code = ? and rarity = ?',
-                (name, price, code, rarity)
+                (name, price, nbcopy, code, rarity)
             )
 
         db.commit()
@@ -89,8 +94,23 @@ def update(code, rarity):
 # Delete a card
 @bp.route('/<code>/<rarity>/delete', methods=('POST',))
 def delete(code, rarity):
-    get_card(code, rarity)
+    card = get_card(code, rarity)
     db = get_db()
-    db.execute('DELETE FROM card WHERE code = ? and rarity = ?', (code, rarity))
+    delete_card = False
+
+    if card['nbcopy'] > 1:
+        db.execute(
+            'UPDATE card SET nbcopy = nbcopy - 1'
+            ' WHERE code = ? and rarity = ?',
+            (code, rarity)
+        )
+    else:
+        db.execute('DELETE FROM card WHERE code = ? and rarity = ?', (code, rarity))
+        delete_card = True
+
     db.commit()
-    return redirect('/')
+
+    if not delete_card:
+        return redirect(url_for('cards.update', code=card['code'], rarity=card['rarity']))
+    else:
+        return redirect('/')
