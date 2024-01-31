@@ -2,11 +2,11 @@
 
 {% block title %}My collection{% endblock %}
 
-
-
 {% block content %}
     <h1>My collection</h1>
-    Card(s) in my collection: {{ count }}
+    <p>Card(s) in my collection: {{ count }}</p>
+
+    <a href="/create" class="crud-button">Add a card</a>
 
     <table>
         <tr>

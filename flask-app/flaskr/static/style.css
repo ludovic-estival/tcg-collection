@@ -27,6 +27,7 @@
 body {
     margin: 0;
     font-family: BlenderProBold;
+    background-color: black;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -65,8 +66,26 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Style the footer */
 .footer {
-    background-color: #f1f1f1;
+    background-color: var(--yellow);
     padding: 10px;
+}
+
+.crud-button {
+    padding: 10px;
+    border: 2px solid var(--blue);
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+}
+
+.crud-button:hover {
+    color: black;
+    background-color: var(--blue);
+}
+
+p, label {
+    color: white;
+    font-size: 20px;
 }
 
 table, th, td {
@@ -81,11 +100,35 @@ th, td {
     text-align: center;
 }
 
-tr{
+tr {
     background-color: white;
 }
 
 th {
     background-color: var(--blue);
     color: black;
-  }
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input{
+    width: 30%;
+    background-color: antiquewhite;
+    padding: 8px;
+    margin: 5px;
+}
+
+input:focus {
+    border: 3px solid var(--blue);
+}
+
+input[type=submit]{
+    width: 5%;
+    background-color: antiquewhite;
+    padding: 8px;
+    margin: 10px;
+    font-size: 18px;
+}
