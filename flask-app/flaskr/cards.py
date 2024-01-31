@@ -8,6 +8,19 @@ from flaskr.db import get_db
 
 bp = Blueprint('cards', __name__)
 
+# Get a card from code and rarity
+def get_card(code, rarity):
+    card = get_db().execute(
+        'SELECT * FROM card WHERE code = ? AND rarity = ?',
+        (code, rarity)
+    ).fetchone()
+
+    if card is None:
+        abort(404, f"Card id {code} and rarity {rarity} doesn't exist.")
+
+    return card
+
+# Index page
 @bp.route('/')
 def view_cards():
     db = get_db()
@@ -15,6 +28,7 @@ def view_cards():
     return render_template('index.html', cards=cards, count=len(cards))
 
 
+# Add a card form
 @bp.route('/create', methods=('GET', 'POST'))
 def create():
     if request.method == 'POST':
@@ -41,3 +55,40 @@ def create():
         return redirect('/')
 
     return render_template('create.html')
+
+# Update a card
+@bp.route('/<code>/<rarity>/update', methods=('GET', 'POST'))
+def update(code, rarity):
+    card = get_card(code, rarity)
+
+    if request.method == 'POST':
+        name = request.form['name']
+        price = request.form['price']
+        db = get_db()
+
+        if not price:
+            db.execute(
+                'UPDATE card SET name = ?'
+                ' WHERE code = ? and rarity = ?',
+                (name, code, rarity)
+            )
+        else:
+            db.execute(
+                'UPDATE card SET name = ?, price = ?'
+                ' WHERE code = ? and rarity = ?',
+                (name, price, code, rarity)
+            )
+
+        db.commit()
+        return redirect('/')
+
+    return render_template('update.html', card=card)
+
+# Delete a card
+@bp.route('/<code>/<rarity>/delete', methods=('POST',))
+def delete(code, rarity):
+    get_card(code, rarity)
+    db = get_db()
+    db.execute('DELETE FROM card WHERE code = ? and rarity = ?', (code, rarity))
+    db.commit()
+    return redirect('/')

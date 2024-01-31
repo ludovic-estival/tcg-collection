@@ -17,7 +17,7 @@
         </tr>
         {% for card in cards %}
             <tr>
-                <td>{{ card['code'] }}</td>
+                <td> <a href="/{{card['code']}}/{{card['rarity']}}/update">{{ card['code']  }}</a> </td> 
                 <td>{{ card['rarity'] }}</td>
                 <td>{{ card['name'] }}</td>
                 <td>{{ card['price'] }}</td>
