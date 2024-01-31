@@ -5,5 +5,6 @@ CREATE TABLE card (
   rarity CHARACTER(10),
   name VARCHAR(100),
   price FLOAT,
+  nbcopy INT,
   PRIMARY KEY (code, rarity)
 );

@@ -36,18 +36,19 @@ def create():
         name = request.form['name']
         rarity = request.form['rarity']
         price = request.form['price']
+        nbcopy = request.form['nbcopy']
         db = get_db()
 
         if not price:
             db.execute(
-                'INSERT INTO card (code, rarity, name)'
-                ' VALUES (?, ?, ?)',
+                'INSERT INTO card (code, rarity, name, nbcopy)'
+                ' VALUES (?, ?, ?, ?)',
                 (code, rarity, name)
             )
         else:
             db.execute(
-                'INSERT INTO card (code, rarity, name, price)'
-                ' VALUES (?, ?, ?, ?)',
+                'INSERT INTO card (code, rarity, name, price, nbcopy)'
+                ' VALUES (?, ?, ?, ?, ?)',
                 (code, rarity, name, price)
             )
             
@@ -64,17 +65,18 @@ def update(code, rarity):
     if request.method == 'POST':
         name = request.form['name']
         price = request.form['price']
+        nbcopy = request.form['nbcopy']
         db = get_db()
 
         if not price:
             db.execute(
-                'UPDATE card SET name = ?'
+                'UPDATE card SET name = ?, nbcopy = ?'
                 ' WHERE code = ? and rarity = ?',
                 (name, code, rarity)
             )
         else:
             db.execute(
-                'UPDATE card SET name = ?, price = ?'
+                'UPDATE card SET name = ?, price = ?, nbcopy = ?'
                 ' WHERE code = ? and rarity = ?',
                 (name, price, code, rarity)
             )

@@ -83,7 +83,7 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--blue);
 }
 
-p, label {
+p {
     color: white;
     font-size: 20px;
 }
@@ -118,11 +118,27 @@ form {
     flex-direction: column;
 }
 
+.form-item {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+label {
+    color: white;
+    font-size: 20px;
+    color: var(--blue);
+    
+}
+
+label:after {
+    content: ":";
+}
+
 input{
-    width: 30%;
-    background-color: antiquewhite;
-    padding: 8px;
-    margin: 5px;
+    background-color: whitesmoke;
+    width: 20%;
 }
 
 input:focus {
@@ -131,7 +147,7 @@ input:focus {
 
 input[type=submit]{
     width: 5%;
-    background-color: antiquewhite;
+    background-color: whitesmoke;
     padding: 8px;
     margin: 10px;
     font-size: 18px;

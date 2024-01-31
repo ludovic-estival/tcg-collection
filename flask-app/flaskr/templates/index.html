@@ -13,7 +13,8 @@
             <th>Code</th>
             <th>Rarity</th>
             <th>Name</th>
-            <th>Price</th>  
+            <th>Price</th>
+            <th>Copies</th>  
         </tr>
         {% for card in cards %}
             <tr>
@@ -21,6 +22,7 @@
                 <td>{{ card['rarity'] }}</td>
                 <td>{{ card['name'] }}</td>
                 <td>{{ card['price'] }}</td>
+                <td>{{ card['nbcopy'] }}</td>
             </tr>
         {% endfor %}
 

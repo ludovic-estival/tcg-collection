@@ -33,7 +33,7 @@ def init_db():
         data = list(reader)
 
     for row in data:
-        db.execute("INSERT INTO card VALUES (?, ?, ?, ?)", row)
+        db.execute("INSERT INTO card VALUES (?, ?, ?, ?, ?)", row)
 
     db.commit()
 
