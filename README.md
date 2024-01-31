@@ -6,14 +6,13 @@ The goal of this app is to manage a card collection, no matter the game (YGO, MT
 
 ## Implemented features:
 
-- Add cards (only manually for the moment)
+- Add cards (one by one and in bulk via a CSV file)
 - Update card information
 - Delete a card
 - Calculation of collection value
 
 ## Next features:
 
-- Add cards in bulk via a CSV file
 - Show card image
 - Sort cards by name, rarity, ... in ascending/descending order
 
