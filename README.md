@@ -1,7 +1,9 @@
-# tcg-collection
+# An application to manage a card collection
 
-Requirements:
-- `pip install django`
+Usefull commands:
+- Install Flask: `pip install Flask`
+- Create database (from `flaskr` folder): `flask --app flaskr init-db`
+- Start local server (from `flaskr` folder): `flask --app flaskr run --debug`
 
 Folders:
-- `tcgCollection`: Django project
+- `flask-app`: Flask project
