@@ -4,29 +4,36 @@
 
 {% block content %}
 
-<h1>Edit {{ card['name'] }}</h1>
+  <div class="return">
+    <a href="/"><i class="fa-solid fa-arrow-left"></i> Return to main page</a>
+  </div>
 
-  <form method="post">
-    <label for="code">Code</label>
-    <input type="text" name="code" id="code" value="{{ card['code'] }}" disabled>
+  <h1>Edit {{ card['name'] }}</h1>
 
-    <label for="name">Name</label>
-    <input type="text" name="name" id="name" value="{{ request.form['name'] or card['name'] }}" required>
+    <div class="form-container">
+      <form action="post">
+    
+        <label for="code">Code</label>
+        <input type="text" name="code" id="code" value="{{ card['code'] }}" disabled>
+      
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" value="{{ request.form['name'] or card['name'] }}" required>
+      
+        <label for="rarity">Rarity</label>
+        <input type="text" name="rarity" id="rarity" value="{{ card['rarity'] }}" disabled>
+      
+        <label for="price">Price</label>
+        <input type="number" step="0.01" name="price" id="price" value="{{ request.form['price'] or card['price'] }}">
 
-    <label for="rarity">Rarity</label>
-    <input type="text" name="rarity" id="rarity" value="{{ card['rarity'] }}" disabled>
+        <label for="copy">Copies</label>
+        <input type="number" min="1" name="nbcopy" id="nbcopy" value="{{ request.form['nbcopy'] or card['nbcopy'] }}">
 
-    <label for="price">Price</label>
-    <input type="number" step="0.01" name="price" id="price" value="{{ request.form['price'] or card['price'] }}">
+        <input type="submit" value="Update this card">
+    
+      </form>
 
-    <label for="copy">Copies</label>
-    <input type="number" min="1" name="nbcopy" id="nbcopy" value="{{ request.form['nbcopy'] or card['nbcopy'] }}">
-
-    <input type="submit" value="Save">
-  </form>
-
-  <form action="{{ url_for('cards.delete', code=card['code'], rarity=card['rarity']) }}" method="post">
-    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
-  </form>
-  
+      <form action="{{ url_for('cards.delete', code=card['code'], rarity=card['rarity']) }}" method="post">
+        <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+      </form>
+  </div>
 {% endblock %}

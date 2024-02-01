@@ -11,33 +11,12 @@ from flaskr.db import get_db
 
 bp = Blueprint('cards', __name__)
 
-UPLOAD_FOLDER = '../csv'
-ALLOWED_EXTENSIONS = {'csv'}
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-def upload_file():
-    if request.method == 'POST':
-        # Check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return None
-        file = request.files['file']
-
-        # If the user does not select a file, the browser submits an
-        # empty file without a filename.
-        if file.filename == '':
-            flash('No selected file')
-            return None
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return filename
-
-# Get a card from code and rarity
-# Return card object or None
 def get_card(code, rarity):
+    """
+    Get a card from code and rarity.
+    Return a card object or None.
+    """
     card = get_db().execute(
         'SELECT * FROM card WHERE code = ? AND rarity = ?',
         (code, rarity)
@@ -45,26 +24,34 @@ def get_card(code, rarity):
 
     return card
 
-# Get the value of the entire collection
+
 def get_collection_value():
+    """
+    Return the value of the collection.
+    """
     value = get_db().execute(
         'SELECT SUM(price * nbcopy) AS value FROM card'
     ).fetchone()
 
     return value['value']
 
-# Index page
+
 @bp.route('/')
 def view_cards():
+    """ 
+    Index page.
+    """
     db = get_db()
     cards = db.execute('SELECT * FROM card ORDER BY name ASC').fetchall()
     value = get_collection_value()
     return render_template('index.html', cards=cards, count=len(cards), value=value)
 
 
-# Add a card form
 @bp.route('/create', methods=('GET', 'POST'))
 def create():
+    """
+    Form to add a card.
+    """
     if request.method == 'POST':
         code = request.form['code']
         name = request.form['name']
@@ -98,9 +85,12 @@ def create():
 
     return render_template('create.html')
 
-# Update a card
+
 @bp.route('/<code>/<rarity>/update', methods=('GET', 'POST'))
 def update(code, rarity):
+    """
+    Page of a specific card.
+    """
     card = get_card(code, rarity)
 
     if request.method == 'POST':
@@ -127,9 +117,12 @@ def update(code, rarity):
 
     return render_template('update.html', card=card)
 
-# Delete a card
+
 @bp.route('/<code>/<rarity>/delete', methods=('POST', ))
 def delete(code, rarity):
+    """
+    Delete a card.
+    """
     card = get_card(code, rarity)
     db = get_db()
     delete_card = False
@@ -151,9 +144,12 @@ def delete(code, rarity):
     else:
         return redirect('/')
 
-@bp.route('/import', methods=('POST', 'GET'))
-def insert_from_csv():
 
+@bp.route('/', methods=('POST', 'GET'))
+def insert_from_csv():
+    """
+    Insert cards from a CSV file.
+    """
     if request.method == 'POST':
         f = request.files['file']
         f.save(f.filename)

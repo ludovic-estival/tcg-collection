@@ -3,14 +3,12 @@
 <head>
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-    
 <body>
-    <div class="topnav">
-        <a href="/">My collection</a>
-        <a href="/import">Import cards</a>
-        <a href="#">Link</a>
-    </div>
+
+    {% block lead %}
+    {% endblock %}
 
     <div class="content">
         {% block content %}
@@ -20,7 +18,7 @@
     <div class="footer">
         {% block footer %}
         {% endblock %}
-    </div>
-            
+    </div>   
+
 </body>
 </html>

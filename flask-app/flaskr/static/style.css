@@ -1,4 +1,4 @@
-/* --- Custom fonts --- */
+/* -- Custom fonts and variables -- */
 
 @font-face {
     font-family: BlenderProBold;
@@ -20,6 +20,8 @@
     --blue: #00f0ff;
 }
 
+/* -- General -- */
+
 * {
     box-sizing: border-box;
 }
@@ -35,41 +37,55 @@ h1, h2, h3, h4, h5, h6 {
     color: white;
 }
 
-/* Style the top navigation bar */
-.topnav {
+/* -- Index -- */
+
+.lead {
+    position: relative;
+    height: 100vh;
+    min-height: 500px;
+    max-height: 1080px;
+    background: url(../static/images/lead-image.jpg);
+    background-size: cover;
+    padding: 15px;
     overflow: hidden;
-    background-color: var(--yellow);
+
+    h1 {
+        margin: 0;
+        color: #fff;
+        font-weight: 900;
+        font-size: 5em;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        line-height: 0.9em;
+    }
 }
 
-/* Style the topnav links */
-.topnav a {
-    float: left;
-    display: block;
-    color: black;
+.lead-content {
+    position: absolute;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 22px;
 }
 
-/* Change color on hover */
-.topnav a:hover {
-    background-color: black;
-    color: white;
+.collection {
+    display: flex;
+    flex-direction: row;
 }
 
-/* Style the content */
+.collection-content {
+    flex-direction: column;
+    margin: 2%;
+}
+
 .content {
     padding: 2%;
     background-color: black;
 }
 
-/* Style the footer */
-.footer {
-    background-color: var(--yellow);
-    padding: 10px;
-}
 
+    
 .crud-button {
     padding: 10px;
     border: 2px solid var(--blue);
@@ -117,42 +133,59 @@ a {
     text-decoration: none;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
+/* -- Forms: update a card and CSV upload -- */
+
+.form-container {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+
+    input, select, textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; 
+        margin-top: 6px;
+        margin-bottom: 16px;
+        resize: vertical; 
+    }
+
+    input[type=submit] {
+        background-color: var(--blue);
+        color: black;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;    
+    }
+
+    input[type=submit]:hover {
+        background-color: var(--yellow);
+    }
+
+    p {
+        color: black;
+        font-size: 16px;
+    }
 }
 
-.form-item {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
+/* -- Return to main page -- */
 
-label {
+.return a {
+    text-decoration: none;
     color: white;
-    font-size: 20px;
+    font-size: 22px;
+}
+
+.return a:hover {
     color: var(--blue);
-    
 }
 
-label:after {
-    content: ":";
-}
 
-input{
-    background-color: whitesmoke;
-    width: 20%;
-}
+/* -- Footer -- */
 
-input:focus {
-    border: 3px solid var(--blue);
-}
-
-input[type=submit]{
-    width: 5%;
-    background-color: whitesmoke;
-    padding: 8px;
-    margin: 10px;
-    font-size: 18px;
+.footer {
+    background-color: var(--yellow);
+    padding: 10px;
 }

@@ -2,31 +2,58 @@
 
 {% block title %}My collection{% endblock %}
 
+{% block lead %}
+    <div class="lead">
+        <div class="lead-content">
+            <h1>My collection</h1>
+        </div>
+    </div>
+{% endblock %}
+
 {% block content %}
-    <h1>My collection</h1>
+
     <p>Card number: <span>{{ count }}</span> </p>
     <p>Collection value: <span>{{ value }} €</span> </p>
 
     <a href="/create" class="crud-button">Add a card</a>
 
-    <table>
-        <tr>
-            <th>Code</th>
-            <th>Rarity</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Copies</th>  
-        </tr>
-        {% for card in cards %}
-            <tr>
-                <td> <a href="/{{card['code']}}/{{card['rarity']}}/update">{{ card['code']  }}</a> </td> 
-                <td>{{ card['rarity'] }}</td>
-                <td>{{ card['name'] }}</td>
-                <td>{{ card['price'] }}</td>
-                <td>{{ card['nbcopy'] }}</td>
-            </tr>
-        {% endfor %}
+    <div class="collection">
 
-    </table>
-    
+        <!-- Table for cards management -->
+        <div class="collection-content">
+            <h1>My collection</h1>
+            
+            <table>
+                <tr>
+                    <th>Code</th>
+                    <th>Rarity</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Copies</th>  
+                </tr>
+                {% for card in cards %}
+                    <tr>
+                        <td> <a href="/{{card['code']}}/{{card['rarity']}}/update">{{ card['code']  }}</a> </td> 
+                        <td>{{ card['rarity'] }}</td>
+                        <td>{{ card['name'] }}</td>
+                        <td>{{ card['price'] }}</td>
+                        <td>{{ card['nbcopy'] }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <!-- CSV form -->
+        <div class="collection-content">
+            <h1>Import cards from a CSV file</h1>
+            <div class="form-container">
+                <form method="post" enctype="multipart/form-data">
+                    <label for="file"><i class="fa-solid fa-file-csv"></i> File: </label>
+                    <input type="file" name="file" maxlength="100">
+                    <p>CSV colums: code - rarity - name - price - copies</p>
+                    <input type="submit" value="Choose this file">
+                </form>
+            </div> 
+        </div>
+    </div>
 {% endblock %}
