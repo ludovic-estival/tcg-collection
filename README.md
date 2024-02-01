@@ -4,17 +4,17 @@
 
 The goal of this app is to manage a card collection, no matter the game (YGO, MTG, ...).
 
-## Implemented features:
+## Features:
 
-- Add cards (one by one and in bulk via a CSV file)
-- Update card information
-- Delete a card
-- Calculation of collection value
-
-## Next features:
-
+- Add cards (one by one and in bulk via a CSV file) :white_check_mark:
+- Update card information :white_check_mark:
+- Delete a card :white_check_mark:
+- Calculation of collection value :white_check_mark:
 - Show card image
-- Sort cards by name, rarity, ... in ascending/descending order
+- Sort cards by card attributes in ascending/descending order
+- Track price of valuable or selected cards
+- Show evolution of prices for the collection and individual cards
+- Adapt the app to support all TCG via a settings file
 
 ## Usefull commands:
 - Install Flask: `pip install Flask`
