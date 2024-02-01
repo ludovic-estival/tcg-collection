@@ -20,6 +20,7 @@
     --blue: #00f0ff;
 }
 
+
 /* -- General -- */
 
 * {
@@ -36,6 +37,20 @@ h1, h2, h3, h4, h5, h6 {
     font-family: Refinery;
     color: white;
 }
+
+
+/* -- Base template -- */
+
+.content {
+    padding: 2%;
+    background-color: black;
+}
+
+.footer {
+    background-color: var(--yellow);
+    padding: 10px;
+}
+
 
 /* -- Index -- */
 
@@ -69,23 +84,19 @@ h1, h2, h3, h4, h5, h6 {
     text-align: center;
 }
 
-.collection {
-    display: flex;
-    flex-direction: row;
-}
-
-.collection-content {
-    flex-direction: column;
+.collection-stats {
     margin: 2%;
+
+    span {
+        color: var(--blue);
+    }
+
+    p {
+        color: white;
+        font-size: 22px;
+    }
 }
 
-.content {
-    padding: 2%;
-    background-color: black;
-}
-
-
-    
 .crud-button {
     padding: 10px;
     border: 2px solid var(--blue);
@@ -99,13 +110,14 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--blue);
 }
 
-p {
-    color: white;
-    font-size: 22px;
+.collection {
+    display: flex;
+    flex-direction: row;
 }
 
-span {
-    color: var(--blue)
+.collection-content {
+    flex-direction: column;
+    margin: 2%;
 }
 
 table, th, td {
@@ -132,6 +144,7 @@ th {
 a {
     text-decoration: none;
 }
+
 
 /* -- Forms: update a card and CSV upload -- */
 
@@ -170,6 +183,7 @@ a {
     }
 }
 
+
 /* -- Return to main page -- */
 
 .return a {
@@ -180,12 +194,4 @@ a {
 
 .return a:hover {
     color: var(--blue);
-}
-
-
-/* -- Footer -- */
-
-.footer {
-    background-color: var(--yellow);
-    padding: 10px;
 }
