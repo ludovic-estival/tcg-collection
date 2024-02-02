@@ -1,5 +1,4 @@
 import requests
-import html5lib
 from bs4 import BeautifulSoup
 
 url = "https://www.cardmarket.com/fr/YuGiOh/Products/Singles/25th-Anniversary-Tin-Dueling-Heroes-Mega-Pack/Lady-Labrynth-of-the-Silver-Castle?sellerCountry=12&language=1,2"
@@ -13,18 +12,22 @@ req = requests.get(url, headers=headers)
 soup = BeautifulSoup(req.content, "html5lib")
 print(req)
 
-# "col-6 col-xl-7" 
+# Traitement en fonction de la réponse
 dd_tags = soup.find_all("dd", class_="col-6 col-xl-7")
 prices = []
 
 for dd in dd_tags:
     try:
-        price.append(dd.span.text)
+        prices.append(dd.span.text)
     except AttributeError:
         continue
 
+print(prices)
+
 # Prices:
-# 0: tendance des prix
-# 1: prix moyen 30 jours
-# 2: prix moyen 7 jours
-# 3: prix moyen 1 jour
+# - tendance des prix
+# - prix moyen 30 jours
+# - prix moyen 7 jours
+# - prix moyen 1 jour
+
+# Result: ['', '1,06 €', '1,23 €', '1,15 €', '1,35 €']
