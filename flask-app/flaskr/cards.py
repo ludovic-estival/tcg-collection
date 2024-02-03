@@ -28,13 +28,13 @@ def get_card(code, rarity):
 
 def get_rarity():
     """
-    Return all rarity codes
+    Return rarity table content.
     """
-    codes = get_db().execute(
+    rarities = get_db().execute(
         'SELECT * FROM rarity'
     ).fetchall()
 
-    return codes
+    return rarities
 
 
 def get_collection_value():
@@ -68,8 +68,9 @@ def create():
     """
 
     codes = get_rarity()
-
+    
     if request.method == 'POST':
+        print("coucou2")
         code = request.form['code']
         name = request.form['name']
         rarity = request.form['rarity']
@@ -83,21 +84,14 @@ def create():
                 ' WHERE code = ? and rarity = ?',
                 (code, rarity))
         else:
-
-            if not price:
-                db.execute(
-                    'INSERT INTO card (code, rarity, name, nbcopy)'
-                    ' VALUES (?, ?, ?, ?)',
-                    (code, rarity, name, nbcopy)
-                )
-            else:
-                db.execute(
-                    'INSERT INTO card (code, rarity, name, price, nbcopy)'
-                    ' VALUES (?, ?, ?, ?, ?)',
-                    (code, rarity, name, price, nbcopy)
-                )
+            db.execute(
+                'INSERT INTO card (code, rarity, name, price, nbcopy)'
+                ' VALUES (?, ?, ?, ?, ?)',
+                (code, rarity, name, price, nbcopy)
+            )
             
         db.commit()
+        print("ajout BD")
         return redirect(url_for('index'))
 
     return render_template('create.html', codes=codes)
