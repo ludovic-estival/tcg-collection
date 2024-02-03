@@ -8,7 +8,7 @@
     <a href="/"><i class="fa-solid fa-arrow-left"></i> Return to main page</a>
   </div>
 
-  <h1>Edit {{ card['name'] }}</h1>
+  <h1>Edit: {{ card['name'] }}</h1>
 
     <div class="form-container">
       <form action="/{{ card['code'] }}/{{ card['rarity'] }}/update" method="post">

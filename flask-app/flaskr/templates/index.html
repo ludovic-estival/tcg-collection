@@ -51,7 +51,13 @@
                 <form method="post" enctype="multipart/form-data">
                     <label for="file"><i class="fa-solid fa-file-csv"></i> File: </label>
                     <input type="file" name="file" maxlength="100">
-                    <p>CSV colums: code - rarity - name - price - copies</p>
+                    <div class="tooltip">CSV informations
+                        <span class="tooltiptext">
+                            Colums: code - rarity - name - price - copies
+                            <br/>
+                            Do not include colum names in file.
+                        </span>
+                    </div>
                     <input type="submit" value="Choose this file">
                 </form>
             </div> 
