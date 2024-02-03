@@ -20,8 +20,12 @@
         <input type="text" name="name" id="name" value="{{ request.form['name'] }}" required placeholder="Name">
       
         <label for="rarity">Rarity:</label>
-        <input type="text" name="rarity" id="rarity" value="{{ request.form['rarity'] }}" required placeholder="Secret Rare">
-      
+        <select name="rarity" id="rarity">
+          {% for rarity in codes %}
+            <option value="{{rarity.code}}">{{rarity.label}}</option>
+          {% endfor %}
+        </select>
+
         <label for="price">Price:</label>
         <input type="number" step="0.01" name="price" id="price" value="{{ request.form['price'] }}" placeholder="5.25">
 

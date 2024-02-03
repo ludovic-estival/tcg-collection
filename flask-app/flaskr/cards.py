@@ -1,6 +1,6 @@
-import functools
 import os
 import csv
+import re
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for, abort
@@ -18,11 +18,23 @@ def get_card(code, rarity):
     Return a card object or None.
     """
     card = get_db().execute(
-        'SELECT * FROM card WHERE code = ? AND rarity = ?',
+        'SELECT card.* FROM card' 
+        ' WHERE card.code = ? AND card.rarity = ?',
         (code, rarity)
     ).fetchone()
 
     return card
+
+
+def get_rarity():
+    """
+    Return all rarity codes
+    """
+    codes = get_db().execute(
+        'SELECT * FROM rarity'
+    ).fetchall()
+
+    return codes
 
 
 def get_collection_value():
@@ -42,7 +54,9 @@ def view_cards():
     Index page.
     """
     db = get_db()
-    cards = db.execute('SELECT * FROM card ORDER BY name ASC').fetchall()
+    cards = db.execute('SELECT card.* from card'
+                       ' ORDER BY card.price DESC'
+                       ).fetchall()
     value = get_collection_value()
     return render_template('index.html', cards=cards, count=len(cards), value=value)
 
@@ -52,6 +66,9 @@ def create():
     """
     Form to add a card.
     """
+
+    codes = get_rarity()
+
     if request.method == 'POST':
         code = request.form['code']
         name = request.form['name']
@@ -81,9 +98,9 @@ def create():
                 )
             
         db.commit()
-        return redirect('/')
+        return redirect(url_for('index'))
 
-    return render_template('create.html')
+    return render_template('create.html', codes=codes)
 
 
 @bp.route('/<code>/<rarity>/update', methods=('GET', 'POST'))
@@ -92,7 +109,7 @@ def update(code, rarity):
     Page of a specific card.
     """
     card = get_card(code, rarity)
-
+    
     if request.method == 'POST':
         name = request.form['name']
         price = request.form['price']
@@ -113,7 +130,7 @@ def update(code, rarity):
             )
 
         db.commit()
-        return redirect('/')
+        return redirect(url_for('index'))
 
     return render_template('update.html', card=card)
 
@@ -155,14 +172,16 @@ def insert_from_csv():
         f.save(f.filename)
         db = get_db()
 
-        with open(f.filename, 'rt') as file:
+        with open(f.filename, 'rt', encoding='UTF-8') as file:
             reader = csv.reader(file)
             data = list(reader)
-
-        for row in data:
-            db.execute("INSERT INTO card VALUES (?, ?, ?, ?, ?)", row)
+        
+        for card in data:
+            card[3] = re.sub(',', '.', card[3])
+            card[3] = float(card[3])
+            db.execute("INSERT INTO card VALUES (?, ?, ?, ?, ?)", card)
 
         os.remove(f.filename)
         db.commit()
-    return render_template('import.html')
+    return redirect('/')
     

@@ -11,7 +11,7 @@
   <h1>Edit {{ card['name'] }}</h1>
 
     <div class="form-container">
-      <form action="post">
+      <form action="/{{ card['code'] }}/{{ card['rarity'] }}/update" method="post">
     
         <label for="code">Code</label>
         <input type="text" name="code" id="code" value="{{ card['code'] }}" disabled>
