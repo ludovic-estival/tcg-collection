@@ -18,6 +18,7 @@ The goal of this app is to manage a card collection, no matter the game (YGO, MT
 
 ## Usefull commands:
 - Install Flask: `pip install Flask`
+- Test libraries: `pip install pytest coverage`
 - Create database (from `flaskr` folder): `flask --app flaskr init-db`
 - Start local server (from `flaskr` folder): `flask --app flaskr run --debug`
 

@@ -110,18 +110,11 @@ def update(code, rarity):
         nbcopy = request.form['nbcopy']
         db = get_db()
 
-        if not price:
-            db.execute(
-                'UPDATE card SET name = ?, nbcopy = ?'
-                ' WHERE code = ? and rarity = ?',
-                (name, nbcopy, code, rarity)
-            )
-        else:
-            db.execute(
-                'UPDATE card SET name = ?, price = ?, nbcopy = ?'
-                ' WHERE code = ? and rarity = ?',
-                (name, price, nbcopy, code, rarity)
-            )
+        db.execute(
+            'UPDATE card SET name = ?, price = ?, nbcopy = ?'
+            ' WHERE code = ? and rarity = ?',
+            (name, price, nbcopy, code, rarity)
+        )
 
         db.commit()
         return redirect(url_for('index'))
