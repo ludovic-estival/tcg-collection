@@ -15,12 +15,22 @@ The goal of this app is to manage a card collection, no matter the game (YGO, MT
 - Track price of valuable or selected cards
 - Show evolution of prices for the collection and individual cards
 - Adapt the app to support all TCG via a settings file
+- Add account connection
 
-## Usefull commands:
-- Install Flask: `pip install Flask`
-- Test libraries: `pip install pytest coverage`
-- Create database (from `flaskr` folder): `flask --app flaskr init-db`
-- Start local server (from `flaskr` folder): `flask --app flaskr run --debug`
+### How to use:
+
+- `cd flask-app`
+- Install the project: `pip install -e .`
+- `cd flaskr`
+- Create database: `flask --app flaskr init-db`
+- Start local server: `flask --app flaskr run --debug`
+
+## Run tests:
+
+- `pytest`
+- Measure code coverage: `coverage run -m pytest`
+    - Results in terminal: `coverage report`
+    - Results in HTML file: `coverage html`
 
 ## Folders:
 - `flask-app`: Flask project

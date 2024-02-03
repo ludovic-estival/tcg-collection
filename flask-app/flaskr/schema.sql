@@ -23,8 +23,8 @@ VALUES
   ('SR', 'Super Rare'),
   ('UR', 'Ultra Rare'),
   ('UL', 'Ultimate Rare'),
-  ('SR', 'Secret Rare'),
-  ('PSR', 'Prismatic Secret Rare'),
+  ('SE', 'Secret Rare'),
+  ('PSE', 'Prismatic Secret Rare'),
   ('GH', 'Ghost Rare'),
   ('GR', 'Gold Rare'),
   ('QCSE', 'Quarter Century Secret Rare');

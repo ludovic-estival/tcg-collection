@@ -70,7 +70,6 @@ def create():
     codes = get_rarity()
     
     if request.method == 'POST':
-        print("coucou2")
         code = request.form['code']
         name = request.form['name']
         rarity = request.form['rarity']
@@ -149,7 +148,7 @@ def delete(code, rarity):
         return redirect('/')
 
 
-@bp.route('/', methods=('POST', 'GET'))
+@bp.route('/import', methods=('POST', 'GET'))
 def insert_from_csv():
     """
     Insert cards from a CSV file.
@@ -164,8 +163,9 @@ def insert_from_csv():
             data = list(reader)
         
         for card in data:
-            card[3] = re.sub(',', '.', card[3])
-            card[3] = float(card[3])
+            if isinstance(card[3], str):
+                card[3] = re.sub(',', '.', card[3])
+                card[3] = float(card[3])
             db.execute("INSERT INTO card VALUES (?, ?, ?, ?, ?)", card)
 
         os.remove(f.filename)
