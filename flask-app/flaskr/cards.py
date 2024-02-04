@@ -49,7 +49,7 @@ def get_collection_value():
 
 
 @bp.route('/')
-def view_cards():
+def index():
     """ 
     Index page.
     """
@@ -155,6 +155,10 @@ def insert_from_csv():
     """
     if request.method == 'POST':
         f = request.files['file']
+        
+        if re.search('.csv$', f.filename) is None:
+            return redirect(url_for('cards.index'))
+        
         f.save(f.filename)
         db = get_db()
 
