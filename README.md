@@ -1,5 +1,14 @@
 # An application to manage a card collection
 
+## Table of contents
+
+1. [Description](#description)
+2. [Features](#features)
+3. [How to use](#how-to-use)
+4. [Demo](#demo)
+5. [Tests](#run-tests)
+6. [Folders](#folders)
+
 ## Description:
 
 The goal of this app is to manage a card collection, no matter the game (YGO, MTG, ...).
@@ -58,3 +67,4 @@ Cards by rarity:
 ## Folders:
 - `flask-app`: Flask project
 - `price-tracker`: Experimental scripts to track collection price
+- `images`: images for documentation
