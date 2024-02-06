@@ -13,7 +13,8 @@ The goal of this app is to manage a card collection, no matter the game (YGO, MT
 - Show card image
 - Sort cards by card attributes in ascending/descending order
 - Track price of valuable or selected cards
-- Show evolution of prices for the collection and individual cards
+- Show evolution of prices for the collection
+- Show number of cards by rarity :white_check_mark:
 - Adapt the app to support all TCG via a settings file
 - Add account connection
 
@@ -24,6 +25,10 @@ The goal of this app is to manage a card collection, no matter the game (YGO, MT
 - `cd flaskr`
 - Create database: `flask --app flaskr init-db`
 - Start local server: `flask --app flaskr run --debug`
+
+## Demo:
+
+In progress.
 
 ## Run tests:
 

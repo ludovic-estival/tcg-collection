@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, g, redirect, render_template, request, url_for
+    Blueprint, render_template
 )
 
 from flaskr.db import get_db

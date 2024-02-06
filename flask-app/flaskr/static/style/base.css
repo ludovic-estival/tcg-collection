@@ -1,0 +1,77 @@
+@font-face {
+    font-family: BlenderProBold;
+    src: url("../fonts/BlenderPro-Bold.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: BlenderProBook;
+    src: url("../fonts/BlenderPro-Book.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: Refinery;
+    src: url("../fonts/Refinery-25-Black.ttf") format('truetype');
+}
+
+:root {
+    --yellow: #fcee0a;
+    --blue: #00f0ff;
+}
+
+* {
+    box-sizing: border-box;
+}
+  
+body {
+    margin: 0;
+    font-family: BlenderProBold;
+    background-color: black;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Refinery;
+    color: white;
+}
+
+.content {
+    padding: 2%;
+    background-color: black;
+}
+
+.footer {
+    background-color: var(--yellow);
+    padding: 10px;
+}
+
+/* -- Nav bar -- */
+
+.navbar {
+    width: 100%;
+    background-color: #555;
+    overflow: auto;
+
+    a {
+        float: left;
+        text-align: center;
+        padding: 12px;
+        color: white;
+        text-decoration: none;
+        font-size: 20px;
+    } 
+
+    a:hover {
+        background-color: var(--blue);
+        color: black;
+    }
+}
+
+.active {
+    background-color: #04AA6D;
+}
+
+@media screen and (max-width: 500px) {
+.navbar a {
+    float: none;
+    display: block;
+    }
+} 

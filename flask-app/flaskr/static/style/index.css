@@ -1,57 +1,3 @@
-/* -- Custom fonts and variables -- */
-
-@font-face {
-    font-family: BlenderProBold;
-    src: url("fonts/BlenderPro-Bold.ttf") format('truetype');
-}
-
-@font-face {
-    font-family: BlenderProBook;
-    src: url("fonts/BlenderPro-Book.ttf") format('truetype');
-}
-
-@font-face {
-    font-family: Refinery;
-    src: url("fonts/Refinery-25-Black.ttf") format('truetype');
-}
-
-:root {
-    --yellow: #fcee0a;
-    --blue: #00f0ff;
-}
-
-
-/* -- General -- */
-
-* {
-    box-sizing: border-box;
-}
-  
-body {
-    margin: 0;
-    font-family: BlenderProBold;
-    background-color: black;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: Refinery;
-    color: white;
-}
-
-
-/* -- Base template -- */
-
-.content {
-    padding: 2%;
-    background-color: black;
-}
-
-.footer {
-    background-color: var(--yellow);
-    padding: 10px;
-}
-
-
 /* -- Index -- */
 
 .lead {
@@ -59,7 +5,7 @@ h1, h2, h3, h4, h5, h6 {
     height: 100vh;
     min-height: 500px;
     max-height: 1080px;
-    background: url(../static/images/lead-image.jpg);
+    background: url(../images/lead-image.jpg);
     background-size: cover;
     padding: 15px;
     overflow: hidden;
@@ -225,19 +171,6 @@ a {
         opacity: 1;
     }
 
-
-}
-
-/* -- Return to main page -- */
-
-.return a {
-    text-decoration: none;
-    color: white;
-    font-size: 22px;
-}
-
-.return a:hover {
-    color: var(--blue);
 }
 
 /* -- Stats --*/

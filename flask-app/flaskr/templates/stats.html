@@ -3,19 +3,10 @@
 {% block title %}Stats{% endblock %}
 
 {% block content %}
-
-    <!-- Chart JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-
-    <div class="return">
-        <a href="/"><i class="fa-solid fa-arrow-left"></i> Return to main page</a>
-    </div>
-
-
     <canvas id="myChart" width="400" height="400"></canvas>
         
     <script>
-
+        
         new Chart(document.getElementById('myChart'), {
             type: 'bar',
             data: {
