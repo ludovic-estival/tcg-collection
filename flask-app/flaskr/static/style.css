@@ -228,10 +228,6 @@ a {
 
 }
 
-  
-  
-
-
 /* -- Return to main page -- */
 
 .return a {
@@ -242,4 +238,10 @@ a {
 
 .return a:hover {
     color: var(--blue);
+}
+
+/* -- Stats --*/
+
+canvas {
+    background-color: white;
 }

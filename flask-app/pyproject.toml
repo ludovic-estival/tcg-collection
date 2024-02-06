@@ -9,6 +9,7 @@ dependencies = [
     "flask",
     "pytest",
     "coverage",
+    "bokeh"
 ]
 
 [build-system]

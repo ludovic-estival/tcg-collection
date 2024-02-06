@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Stats{% endblock %}
+
+{% block content %}
+
+    <!-- Chart JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+    <div class="return">
+        <a href="/"><i class="fa-solid fa-arrow-left"></i> Return to main page</a>
+    </div>
+
+
+    <canvas id="myChart" width="400" height="400"></canvas>
+        
+    <script>
+
+        new Chart(document.getElementById('myChart'), {
+            type: 'bar',
+            data: {
+                labels: {{labels|tojson}},
+                datasets: [
+                    {
+                        label: "Number of cards:",
+                        /* -- to change when rarities change --*/
+                        backgroundColor: ["#012a4a", "#013a63", "#01497c", "#014f86", "#2a6f97", "#2c7da0", "#468faf", "#61a5c2", "#89c2d9", "#a9d6e5"],
+                        data: {{data|tojson}} 
+                    }
+                ]  
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: 'Number of cards by rarity'
+                }
+            }
+        });
+        
+    </script>
+{% endblock %}

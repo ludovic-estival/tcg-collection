@@ -3,10 +3,9 @@ import csv
 import re
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for, abort
+    Blueprint, g, redirect, render_template, request, url_for
 )
 
-from werkzeug.utils import secure_filename
 from flaskr.db import get_db
 
 bp = Blueprint('cards', __name__)
@@ -58,7 +57,7 @@ def index():
                        ' ORDER BY card.price DESC'
                        ).fetchall()
     value = get_collection_value()
-    return render_template('index.html', cards=cards, count=len(cards), value=value)
+    return render_template('index.html', cards=cards, count=len(cards), value=round(value, 2))
 
 
 @bp.route('/create', methods=('GET', 'POST'))
