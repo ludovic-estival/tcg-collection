@@ -28,7 +28,25 @@ The goal of this app is to manage a card collection, no matter the game (YGO, MT
 
 ## Demo:
 
-In progress.
+### Home page
+
+General informations:
+
+![Infos](images/informations.png)
+
+List of cards:
+
+![Cards](images/collection.png)
+
+Card edit (may change in the future):
+
+![Edit](images/card-edit.png)
+
+### Statistics page
+
+Cards by rarity:
+
+![Cards by rarity](images/stats.png)
 
 ## Run tests:
 
