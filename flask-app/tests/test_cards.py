@@ -8,7 +8,8 @@ def test_index(client):
     assert client.get('/').status_code == 200
     
 
-def test_create(client, app):
+def test_create(client, app, auth):
+    auth.login()
     assert client.get('/create').status_code == 200
     client.post('/create', data={'code': 'MP23-003', 'rarity': 'C', 'name': 'Test-Create', 'price': 10.0, 'nbcopy': 1})
 
@@ -18,10 +19,11 @@ def test_create(client, app):
         assert count == 3
 
 
-def test_create_existing(client, app):
+def test_create_existing(client, app, auth):
     """
     If an existing card is created, copies number will be increased by one.
     """
+    auth.login()
     assert client.get('/create').status_code == 200
     client.post('/create', data={'code': 'MP23-001', 'rarity': 'PSE', 'name': 'Lovely Labrynth', 'price': 5, 'nbcopy': 2})
 
@@ -31,7 +33,8 @@ def test_create_existing(client, app):
         assert card['nbcopy'] == 3
 
 
-def test_update(client, app):
+def test_update(client, app, auth):
+    auth.login()
     assert client.get('/MP23-001/PSE/update').status_code == 200
     client.post('/MP23-001/PSE/update', data={'code': 'MP23-001', 'rarity': 'PSE', 'name': 'Updated', 'price': 10.0, 'nbcopy': 1})
 
@@ -41,10 +44,11 @@ def test_update(client, app):
         assert card['name'] == 'Updated'
 
 
-def test_card_delete(client, app):
+def test_card_delete(client, app, auth):
     """
     A card with one copy will be deleted.
     """
+    auth.login()
     response = client.post('/MP23-002/GR/delete')
     assert response.headers["Location"] == "/"
 
@@ -54,10 +58,11 @@ def test_card_delete(client, app):
         assert card is None
     
 
-def test_copy_delete(client, app):
+def test_copy_delete(client, app, auth):
     """
     If a card has more than one copy, the number of copy will be reduced.
     """
+    auth.login()
     response = client.post('/MP23-001/PSE/delete')
 
     assert response.headers["Location"] == "/MP23-001/PSE/update"
