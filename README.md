@@ -24,8 +24,8 @@ The goal of this app is to manage a card collection, no matter the game (YGO, MT
 - Track price of valuable or selected cards
 - Show evolution of prices for the collection
 - Show number of cards by rarity :white_check_mark:
-- Adapt the app to support all TCG via a settings file
-- Add account connection
+- Database can support all TCG games
+- Add account connection and registration :white_check_mark:
 
 ### How to use:
 
