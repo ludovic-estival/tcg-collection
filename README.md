@@ -68,3 +68,4 @@ Cards by rarity:
 - `flask-app`: Flask project
 - `price-tracker`: Experimental scripts to track collection price
 - `images`: images for documentation
+- `doc`: documentation and diagrams

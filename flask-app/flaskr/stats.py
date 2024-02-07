@@ -2,12 +2,14 @@ from flask import (
     Blueprint, render_template
 )
 
+from flaskr.auth import login_required
 from flaskr.db import get_db
 
 bp = Blueprint('stats', __name__)
 
 
 @bp.route('/stats')
+@login_required
 def index():
     rarities = get_db().execute('SELECT code FROM rarity')
     labels = []

@@ -3,9 +3,10 @@ import csv
 import re
 
 from flask import (
-    Blueprint, g, redirect, render_template, request, url_for
+    Blueprint, g, redirect, render_template, request, url_for, session
 )
 
+from flaskr.auth import login_required
 from flaskr.db import get_db
 
 bp = Blueprint('cards', __name__)
@@ -46,7 +47,6 @@ def get_collection_value():
 
     return value['value']
 
-
 @bp.route('/')
 def index():
     """ 
@@ -57,10 +57,15 @@ def index():
                        ' ORDER BY card.price DESC'
                        ).fetchall()
     value = get_collection_value()
-    return render_template('index.html', cards=cards, count=len(cards), value=round(value, 2))
+
+    if value is None:
+        return render_template('index.html', count=0, value=0)
+    else:
+        return render_template('index.html', cards=cards, count=len(cards), value=round(value, 2))
 
 
 @bp.route('/create', methods=('GET', 'POST'))
+@login_required
 def create():
     """
     Form to add a card.
@@ -96,6 +101,7 @@ def create():
 
 
 @bp.route('/<code>/<rarity>/update', methods=('GET', 'POST'))
+@login_required
 def update(code, rarity):
     """
     Page of a specific card.
@@ -121,6 +127,7 @@ def update(code, rarity):
 
 
 @bp.route('/<code>/<rarity>/delete', methods=('POST', ))
+@login_required
 def delete(code, rarity):
     """
     Delete a card.
@@ -148,6 +155,7 @@ def delete(code, rarity):
 
 
 @bp.route('/import', methods=('POST', 'GET'))
+@login_required
 def insert_from_csv():
     """
     Insert cards from a CSV file.
@@ -174,4 +182,3 @@ def insert_from_csv():
         os.remove(f.filename)
         db.commit()
     return redirect('/')
-    

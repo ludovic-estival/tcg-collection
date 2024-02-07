@@ -8,12 +8,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Chart JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    {% block style %}
+    {% endblock %}
 </head>
 <body>
 
     <div class="navbar">
         <a href="/"><i class="fa fa-fw fa-home"></i> Home</a>
         <a href="/stats"><i class="fa-solid fa-chart-simple"></i> Statistics</a>
+        
+        {% if session['user_id'] %}
+            <a href="/auth/logout" class="split"><i class="fa-solid fa-user-xmark"></i> Logout</a>
+        {% else %}
+            <a href="/auth/login" class="split"><i class="fa-solid fa-user-check"></i> Login</a>
+            <a href="/auth/register" class="split"><i class="fa-solid fa-user-plus"></i> Register</a>
+        {% endif %}
     </div>
 
     {% block lead %}
@@ -21,6 +30,11 @@
 
     <div class="content">
         {% block content %}
+        {% endblock %}
+    </div>
+
+    <div class="landing">
+        {% block landing %}
         {% endblock %}
     </div>
 

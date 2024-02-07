@@ -33,6 +33,11 @@ h1, h2, h3, h4, h5, h6 {
     color: white;
 }
 
+p, label{
+    color: white;
+    font-size: 20px;
+}
+
 .content {
     padding: 2%;
     background-color: black;
@@ -63,7 +68,13 @@ h1, h2, h3, h4, h5, h6 {
         background-color: var(--blue);
         color: black;
     }
+
+    .split {
+        float: right;
+    }
 }
+
+
 
 .active {
     background-color: #04AA6D;
