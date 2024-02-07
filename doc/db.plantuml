@@ -1,5 +1,46 @@
-@startuml
+@startuml database-diagram
 
+class user {
+    Int id
+    String username
+    String password
+}
 
+class collection {
+    Int id
+    String name
+}
+
+class snapshot {
+    Int id
+    Date date
+    Int cardsnumb
+    Float totalvalue
+}
+
+class card {
+    String code
+    String rarity
+    String name
+    Float price
+}
+
+class rarity {
+    String code
+    String label
+} 
+
+class contain {
+    Int idCollection
+    Int cardCode
+    String rarity
+    Int nbcopy
+}
+
+user "1" -right- "*" collection
+collection "1" -up- "*" snapshot
+card "*" -up- "*" rarity  
+collection "*" -right- "*" card
+(collection, card) .. contain
 
 @enduml
