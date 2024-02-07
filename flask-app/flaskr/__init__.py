@@ -29,14 +29,14 @@ def create_app(test_config=None):
 
     from . import auth
     app.register_blueprint(auth.bp)
-    app.add_url_rule('/auth', endpoint='auth')
+
+    from . import collection
+    app.register_blueprint(collection.bp)
 
     from . import cards
     app.register_blueprint(cards.bp)
-    app.add_url_rule('/', endpoint='index')
 
     from . import stats
     app.register_blueprint(stats.bp)
-    app.add_url_rule('/stats', endpoint='stats')
 
     return app

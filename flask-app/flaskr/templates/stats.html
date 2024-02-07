@@ -6,17 +6,16 @@
     <canvas id="myChart" width="400" height="400"></canvas>
         
     <script>
-        /* -- Errors with {{ | }} are normal -- */
         new Chart(document.getElementById('myChart'), {
             type: 'bar',
             data: {
-                labels: {{labels|tojson}},
+                labels: {{ labels | tojson }},
                 datasets: [
                     {
                         label: "Number of cards:",
                         /* -- to change when rarities change --*/
                         backgroundColor: ["#012a4a", "#013a63", "#01497c", "#014f86", "#2a6f97", "#2c7da0", "#468faf", "#61a5c2", "#89c2d9", "#a9d6e5"],
-                        data: {{data|tojson}} 
+                        data: {{ data | tojson }} 
                     }
                 ]  
             },

@@ -7,7 +7,7 @@
   <h1>Add a card</h1>
 
     <div class="form-container">
-      <form action="/create" method="post">
+      <form action="/collection/{{id}}/create" method="post">
     
         <label for="code">Code:</label>
         <input type="text" name="code" id="code" value="{{ request.form['code'] }}" required placeholder="MP23-EN226">

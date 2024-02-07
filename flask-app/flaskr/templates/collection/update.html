@@ -7,7 +7,7 @@
   <h1>Edit: {{ card['name'] }}</h1>
 
     <div class="form-container">
-      <form action="/{{ card['code'] }}/{{ card['rarity'] }}/update" method="post">
+      <form action="/collection/{{id}}/{{ card['code'] }}/{{ card['rarity'] }}/update" method="post">
     
         <label for="code">Code</label>
         <input type="text" name="code" id="code" value="{{ card['code'] }}" disabled>
@@ -28,7 +28,7 @@
     
       </form>
 
-      <form action="{{ url_for('cards.delete', code=card['code'], rarity=card['rarity']) }}" method="post">
+      <form action="/collection/{{id}}/{{ card['code'] }}/{{ card['rarity'] }}/delete" method="post">
         <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
       </form>
   </div>

@@ -3,7 +3,7 @@ import csv
 import re
 
 from flask import (
-    Blueprint, g, redirect, render_template, request, url_for, session
+    Blueprint, g, redirect, render_template, request, url_for
 )
 
 from flaskr.auth import login_required
@@ -12,15 +12,16 @@ from flaskr.db import get_db
 bp = Blueprint('cards', __name__)
 
 
-def get_card(code, rarity):
+def get_card(id, code, rarity):
     """
     Get a card from code and rarity.
     Return a card object or None.
     """
     card = get_db().execute(
-        'SELECT card.* FROM card' 
-        ' WHERE card.code = ? AND card.rarity = ?',
-        (code, rarity)
+        'SELECT card.*, contain.nbcopy FROM card, contain, collection' 
+        ' WHERE contain.idCollection = collection.id AND collection.id = ?'
+        ' AND contain.cardcode = card.code AND card.code = ? AND card.rarity = ?',
+        (id, code, rarity)
     ).fetchone()
 
     return card
@@ -37,36 +38,69 @@ def get_rarity():
     return rarities
 
 
-def get_collection_value():
+def get_cards_number(id):
+    """
+    Return the number of cards in the collection.
+    """
+    total = get_db().execute(
+        'SELECT SUM(contain.nbcopy) AS value FROM collection, card, contain'
+        ' WHERE contain.idCollection = collection.id AND collection.id = ?'
+        ' AND contain.cardcode = card.code'
+        ' ORDER BY card.code',
+        (id)
+    ).fetchone()
+
+    return total["value"]
+
+
+def get_collection_value(id):
     """
     Return the value of the collection.
     """
     value = get_db().execute(
-        'SELECT SUM(price * nbcopy) AS value FROM card'
+        'SELECT SUM(card.price * contain.nbcopy) AS value FROM collection, card, contain'
+        ' WHERE contain.idCollection = collection.id AND collection.id = ?'
+        ' AND contain.cardcode = card.code',
+        (id)
     ).fetchone()
 
     return value['value']
 
-@bp.route('/')
-def index():
-    """ 
-    Index page.
+
+def get_collection_content(id):
     """
-    db = get_db()
-    cards = db.execute('SELECT card.* from card'
-                       ' ORDER BY card.price DESC'
-                       ).fetchall()
-    value = get_collection_value()
+    Return all the cards of the collection for a specific collection id.
+    """
+    collection = get_db().execute(
+        'SELECT card.code, card.rarity, card.name, card.price, contain.nbcopy'
+        ' FROM collection, card, contain'
+        ' WHERE contain.idCollection = collection.id AND collection.id = ?'
+        ' AND contain.cardcode = card.code'
+        ' ORDER BY card.price DESC', 
+        (id)
+    ).fetchall()
 
-    if value is None:
-        return render_template('index.html', count=0, value=0)
-    else:
-        return render_template('index.html', cards=cards, count=len(cards), value=round(value, 2))
+    return collection
 
 
-@bp.route('/create', methods=('GET', 'POST'))
+@bp.route('/collection/<id>')
 @login_required
-def create():
+def index(id):
+
+    cards = get_collection_content(id)
+    total = get_cards_number(id)
+    value = get_collection_value(id)
+
+    if cards is None:
+        return render_template('collection/index.html', count=0, value=0)
+    else:
+        # count=len(cards) value=round(value, 2)
+        return render_template('collection/index.html', cards=cards, count=total, value=round(value, 2), id=id)
+
+
+@bp.route('/collection/<id>/create', methods=('GET', 'POST'))
+@login_required
+def create(id):
     """
     Form to add a card.
     """
@@ -81,32 +115,37 @@ def create():
         nbcopy = request.form['nbcopy']
         db = get_db()
 
-        if get_card(code, rarity):
+        if get_card(id, code, rarity):
             db.execute(
-                'UPDATE card SET nbcopy = nbcopy + 1'
-                ' WHERE code = ? and rarity = ?',
-                (code, rarity))
+                'UPDATE contain SET nbcopy = nbcopy + 1'
+                ' WHERE codeCarte = ? AND rarity = ? AND idCollection = ?',
+                (code, rarity, id))
         else:
             db.execute(
-                'INSERT INTO card (code, rarity, name, price, nbcopy)'
-                ' VALUES (?, ?, ?, ?, ?)',
-                (code, rarity, name, price, nbcopy)
+                'INSERT INTO card (code, rarity, name, price)'
+                ' VALUES (?, ?, ?, ?)',
+                (code, rarity, name, price)
+            )
+
+            db.execute(
+                'INSERT INTO contain'
+                ' VALUES (?, ?, ?, ?)',
+                (id, code, rarity, 1)
             )
             
         db.commit()
-        print("ajout BD")
-        return redirect(url_for('index'))
+        return redirect("/collection/" + str(id))
 
-    return render_template('create.html', codes=codes)
+    return render_template('collection/create.html', codes=codes, id=id)
 
 
-@bp.route('/<code>/<rarity>/update', methods=('GET', 'POST'))
+@bp.route('/collection/<id>/<code>/<rarity>/update', methods=('GET', 'POST'))
 @login_required
-def update(code, rarity):
+def update(id, code, rarity):
     """
     Page of a specific card.
     """
-    card = get_card(code, rarity)
+    card = get_card(id, code, rarity)
     
     if request.method == 'POST':
         name = request.form['name']
@@ -115,48 +154,55 @@ def update(code, rarity):
         db = get_db()
 
         db.execute(
-            'UPDATE card SET name = ?, price = ?, nbcopy = ?'
+            'UPDATE card SET name = ?, price = ?'
             ' WHERE code = ? and rarity = ?',
-            (name, price, nbcopy, code, rarity)
+            (name, price, code, rarity)
+        )
+
+        db.execute(
+            'UPDATE contain SET nbcopy = ?'
+            ' WHERE cardCode = ? AND rarity = ? AND idCollection = ?',
+            (nbcopy, code, rarity, id)
         )
 
         db.commit()
-        return redirect(url_for('index'))
+        return redirect("/collection/" + str(id))
 
-    return render_template('update.html', card=card)
+    return render_template('collection/update.html', card=card, id=id)
 
 
-@bp.route('/<code>/<rarity>/delete', methods=('POST', ))
+@bp.route('/collection/<id>/<code>/<rarity>/delete', methods=('POST', ))
 @login_required
-def delete(code, rarity):
+def delete(id, code, rarity):
     """
     Delete a card.
     """
-    card = get_card(code, rarity)
+    card = get_card(id, code, rarity)
     db = get_db()
     delete_card = False
 
     if card['nbcopy'] > 1:
         db.execute(
-            'UPDATE card SET nbcopy = nbcopy - 1'
-            ' WHERE code = ? and rarity = ?',
-            (code, rarity)
+            'UPDATE contain SET nbcopy = nbcopy - 1'
+            ' WHERE cardCode = ? AND rarity = ? AND idCollection = ?',
+            (code, rarity, id)
         )
     else:
-        db.execute('DELETE FROM card WHERE code = ? and rarity = ?', (code, rarity))
+        db.execute('DELETE FROM contain WHERE cardCode = ? AND rarity = ? AND idCollection = ?', (code, rarity, id))
+        db.execute('DELETE FROM card WHERE code = ? AND rarity = ?', (code, rarity))
         delete_card = True
 
     db.commit()
 
     if not delete_card:
-        return redirect(url_for('cards.update', code=card['code'], rarity=card['rarity']))
+        return redirect("/collection/" + str(id) + "/" + card['code'] + "/" + card['rarity'] + "/update")
     else:
-        return redirect('/')
+        return redirect("/collection/" + str(id))
 
 
-@bp.route('/import', methods=('POST', 'GET'))
+@bp.route('/collection/<id>/import', methods=('POST', 'GET'))
 @login_required
-def insert_from_csv():
+def insert_from_csv(id):
     """
     Insert cards from a CSV file.
     """
@@ -177,8 +223,14 @@ def insert_from_csv():
             if isinstance(card[3], str):
                 card[3] = re.sub(',', '.', card[3])
                 card[3] = float(card[3])
-            db.execute("INSERT INTO card VALUES (?, ?, ?, ?, ?)", card)
+
+            copy = card.pop(len(card)-1)
+
+            # code rarity name price --> card 
+            # code rarity copy --> contain
+            db.execute("INSERT INTO card VALUES (?, ?, ?, ?)", card)
+            db.execute("INSERT INTO contain VALUES (?, ?, ?, ?)", (id, card[0], card[1], copy))
 
         os.remove(f.filename)
         db.commit()
-    return redirect('/')
+    return redirect("/collection/" + str(id))

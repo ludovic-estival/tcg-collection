@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}My collection{% endblock %}
+
+{% block lead %}
+    <div class="lead">
+        <div class="lead-content">
+            <h1>Collection management</h1>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+    {% if session['user_id'] %}
+        <div class="collection-stats">
+            <h1>General informations</h1>
+            <p>Number of cards: <span>{{ count }}</span> </p>
+            <p>Collection value: <span>{{ value }} €</span> </p>
+            <a href="/collection/{{ id }}/create" class="crud-button">Add a card</a> 
+        </div>
+        
+        <div class="collection">
+            <!-- Table for cards management -->
+            <div class="collection-content">
+                <h1>My collection</h1>
+                
+                <table>
+                    <tr>
+                        <th>Code</th>
+                        <th>Rarity</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Copies</th>  
+                    </tr>
+                    {% for card in cards %}
+                        <tr>
+                            <td> <a href="/collection/{{ id }}/{{card['code']}}/{{card['rarity']}}/update">{{ card['code']  }}</a> </td> 
+                            <td>{{ card['rarity'] }}</td>
+                            <td>{{ card['name'] }}</td>
+                            <td>{{ card['price'] }}</td>
+                            <td>{{ card['nbcopy'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <!-- CSV form -->
+            <div class="collection-content">
+                <h1>Import cards from a CSV file</h1>
+                <div class="form-container">
+                    <form action="/collection/{{id}}/import" method="post" enctype="multipart/form-data">
+                        <label for="file"><i class="fa-solid fa-file-csv"></i> File: </label>
+                        <input type="file" name="file" maxlength="100" required>
+                        <div class="tooltip">CSV informations
+                            <span class="tooltiptext">
+                                Colums: code - rarity - name - price - copies
+                                <br/>
+                                Do not include colum names in file.
+                            </span>
+                        </div>
+                        <input type="submit" value="Choose this file">
+                    </form>
+                </div> 
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+
+{% block landing %}
+
+    {% if not session['user_id'] %}
+        <p>Landing page content.</p>
+    {% endif %}
+
+{% endblock %}
