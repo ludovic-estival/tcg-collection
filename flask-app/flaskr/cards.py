@@ -9,7 +9,7 @@ from flask import (
 from flaskr.auth import login_required
 from flaskr.db import get_db
 
-bp = Blueprint('cards', __name__)
+bp = Blueprint('cards', __name__, url_prefix='/collection')
 
 
 def get_card(id, code, rarity):
@@ -83,7 +83,7 @@ def get_collection_content(id):
     return collection
 
 
-@bp.route('/collection/<id>')
+@bp.route('/<id>')
 @login_required
 def index(id):
 
@@ -98,7 +98,7 @@ def index(id):
         return render_template('collection/index.html', cards=cards, count=total, value=round(value, 2), id=id)
 
 
-@bp.route('/collection/<id>/create', methods=('GET', 'POST'))
+@bp.route('/<id>/create', methods=('GET', 'POST'))
 @login_required
 def create(id):
     """
@@ -139,7 +139,7 @@ def create(id):
     return render_template('collection/create.html', codes=codes, id=id)
 
 
-@bp.route('/collection/<id>/<code>/<rarity>/update', methods=('GET', 'POST'))
+@bp.route('/<id>/<code>/<rarity>/update', methods=('GET', 'POST'))
 @login_required
 def update(id, code, rarity):
     """
@@ -171,7 +171,7 @@ def update(id, code, rarity):
     return render_template('collection/update.html', card=card, id=id)
 
 
-@bp.route('/collection/<id>/<code>/<rarity>/delete', methods=('POST', ))
+@bp.route('/<id>/<code>/<rarity>/delete', methods=('POST', ))
 @login_required
 def delete(id, code, rarity):
     """
@@ -200,7 +200,7 @@ def delete(id, code, rarity):
         return redirect("/collection/" + str(id))
 
 
-@bp.route('/collection/<id>/import', methods=('POST', 'GET'))
+@bp.route('/<id>/import', methods=('POST', 'GET'))
 @login_required
 def insert_from_csv(id):
     """

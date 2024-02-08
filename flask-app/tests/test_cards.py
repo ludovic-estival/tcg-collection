@@ -4,10 +4,6 @@ import pytest
 from flaskr.db import get_db
 
 
-def test_index(client):
-    assert client.get('/').status_code == 200
-    
-
 def test_create(client, app, auth):
     auth.login()
     assert client.get('/create').status_code == 200

@@ -23,9 +23,11 @@ def register():
                 (username, generate_password_hash(password)),
             )
             db.commit()
+            return render_template('auth/login.html')
         except db.IntegrityError:
+            # Ajouter un message d'erreur sur la page du login
             return redirect(url_for("auth.login"))
-    
+        
     return render_template('auth/register.html')
 
 
@@ -34,6 +36,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        
         db = get_db()
         error = None
         user = db.execute(
@@ -48,8 +51,8 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user['id']
-            return redirect(url_for('index'))
-
+            return redirect('/')
+        
     return render_template('auth/login.html')
 
 
@@ -72,7 +75,7 @@ def load_logged_in_user():
 @bp.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('index'))
+    return redirect('/')
 
 
 def login_required(view):

@@ -16,7 +16,7 @@ def index():
     data = []
     
     for rarity in rarities:
-        cards_count = get_db().execute('SELECT COUNT(code) as number FROM card WHERE rarity = ?', rarity).fetchone()
+        cards_count = get_db().execute('SELECT COUNT(cardCode) AS number FROM contain WHERE rarity = ?', rarity).fetchone()
         labels.append(rarity["code"])
         data.append(cards_count["number"])
         
