@@ -14,26 +14,43 @@
 
     {% if session['user_id'] %}
         <div class="collection">
+            <!-- Table with collections -->
             <div class="collection-content">
                 <h1>My collections</h1>
-                
-                <table>
-                    <tr>
-                        <th>Name</th>
-                        <th>Actions</th> 
-                    </tr>
-                    {% for collection in collections %}
+
+                {% if collections %}
+                    <table>
                         <tr>
-                            <td><a href="/collection/{{ collection["id"] }}">{{ collection['name'] }}</a></td>
-                            <td><a href="/collection/{{ collection["id"]}}/delete"><i class="fa-solid fa-square-minus"></i> Delete</a></td>
+                            <th>Name</th>
+                            <th>Actions</th> 
                         </tr>
-                    {% endfor %}
-                </table>
+                        {% for collection in collections %}
+                            <tr>
+                                <td><a href="/collection/{{ collection["id"] }}">{{ collection['name'] }}</a></td>
+                                <td><a href="/delete/{{ collection["id"] }}" onclick="return confirm('Are you sure?');"><i class="fa-solid fa-square-minus"></i> Delete</a></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% else %}
+                    <p>No collections.</p>        
+                {% endif %}
+                
+            </div>
+            <!-- Creation form -->
+            <div class="collection-content">
+                <h1>Add a collection:</h1>
+
+                <div class="form-container">
+                    <form action="/create" method="post">
+                        <label for="name">Name:</label>
+                        <input type="text" name="name" id="name" required placeholder="My collection">
+                        <input type="submit" value="Create this collection">
+                    </form>
+                </div>
             </div>
         </div>
     {% endif %}
 {% endblock %}
-
 
 {% block landing %}
 

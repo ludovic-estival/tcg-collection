@@ -117,9 +117,9 @@ def create(id):
 
         if get_card(id, code, rarity):
             db.execute(
-                'UPDATE contain SET nbcopy = nbcopy + 1'
+                'UPDATE contain SET nbcopy = nbcopy + ?'
                 ' WHERE codeCarte = ? AND rarity = ? AND idCollection = ?',
-                (code, rarity, id))
+                (nbcopy, code, rarity, id))
         else:
             db.execute(
                 'INSERT INTO card (code, rarity, name, price)'
@@ -130,7 +130,7 @@ def create(id):
             db.execute(
                 'INSERT INTO contain'
                 ' VALUES (?, ?, ?, ?)',
-                (id, code, rarity, 1)
+                (id, code, rarity, nbcopy)
             )
             
         db.commit()
