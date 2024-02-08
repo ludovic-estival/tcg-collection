@@ -244,15 +244,43 @@ def stats(id):
     """
     Create and display charts.
     """
+
+    # -- Bar chart: number of cards by rarity
+
     rarities = get_db().execute('SELECT code FROM rarity').fetchall()
-    labels = []
-    data = []
+    labelsBar = []
+    dataBar = []
     
     for rarity in rarities:
-        cards_count = get_db().execute('SELECT COUNT(cardCode) AS number FROM contain'
+        cards_count = get_db().execute('SELECT SUM(nbcopy) AS number FROM contain'
                                        ' WHERE rarity = ? AND idCollection = ?',
                                         (rarity['code'], id)).fetchone()
-        labels.append(rarity["code"])
-        data.append(cards_count["number"])
+        labelsBar.append(rarity["code"])
+        dataBar.append(cards_count["number"])
+
+    # -- Line chart: snapshots of the collection (value and number of cards over time)
         
-    return render_template('collection/stats.html', labels=labels, data=data, id=id)
+    labelsLine = []
+    # Number of cards in the collection
+    dataLineNum = [] 
+    # Total value of the collection
+    dataLineVal = []
+
+    #add_snapshot(id)
+    
+    snapshots = get_db().execute('SELECT datetime(snapDate) as snapDate, cardsNumber, totalValue FROM snapshot WHERE idCollection = ?', (id,)).fetchall()
+    
+    for snapshot in snapshots:
+        labelsLine.append(snapshot["snapDate"])
+        dataLineNum.append(snapshot["cardsNumber"])
+        dataLineVal.append(snapshot["totalValue"])
+        
+    return render_template('collection/stats.html', labelsBar=labelsBar, dataBar=dataBar, labelsLine=labelsLine, dataLineNum=dataLineNum, dataLineVal=dataLineVal, id=id)
+
+
+# For testing purpose only, will be automated later.
+def add_snapshot(id):
+    db = get_db()
+    db.execute('INSERT INTO snapshot(idCollection, snapDate, cardsNumber, totalValue)'
+                     ' VALUES (?, datetime("now"), ?, ?)', (id, get_cards_number(id), get_collection_value(id)))
+    db.commit()

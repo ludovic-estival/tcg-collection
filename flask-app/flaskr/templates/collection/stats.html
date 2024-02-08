@@ -17,19 +17,22 @@
 {% endblock %}
 
 {% block content %}
-    <canvas id="myChart" width="400" height="400"></canvas>
-        
+    <div class="chart-container" style="position: relative; height:40vh; width:80vw">
+        <canvas id="bar-chart"></canvas>
+        <canvas id="line-chart"></canvas>  
+    </div>
+    
     <script>
-        new Chart(document.getElementById('myChart'), {
+        new Chart(document.getElementById('bar-chart'), {
             type: 'bar',
             data: {
-                labels: {{ labels | tojson }},
+                labels: {{ labelsBar | tojson }},
                 datasets: [
                     {
-                        label: "Number of cards:",
+                        label: "Number of cards",
                         /* -- to change when rarities change --*/
                         backgroundColor: ["#012a4a", "#013a63", "#01497c", "#014f86", "#2a6f97", "#2c7da0", "#468faf", "#61a5c2", "#89c2d9", "#a9d6e5"],
-                        data: {{ data | tojson }} 
+                        data: {{ dataBar | tojson }} 
                     }
                 ]  
             },
@@ -43,6 +46,39 @@
                 }
             }
         });
-        
+
+
+        new Chart(document.getElementById('line-chart'), {
+            type: 'line',
+            data: {
+                labels: {{ labelsLine | tojson }},
+                datasets: [
+                    {
+                        label: "Number of cards",
+                        borderColor: "#3e95cd",
+                        fill: false, 
+                        data: {{ dataLineNum | tojson }}
+                    },
+                    {
+                        label: "Collection value",
+                        borderColor: "#8e5ea2",
+                        fill: false,
+                        data: {{ dataLineVal | tojson }} 
+                    }
+                ]  
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'Evolution of collection value and number of cards'
+                },
+                hover: {
+                    mode: 'index',
+                    intersect: true
+                }
+            }
+        });
     </script>
 {% endblock %}

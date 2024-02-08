@@ -1,5 +1,6 @@
 -- DROP dans le sens inverse de création
 
+DROP TABLE IF EXISTS snapshot;
 DROP TABLE IF EXISTS contain;
 DROP TABLE IF EXISTS card;
 DROP TABLE IF EXISTS user;
@@ -19,20 +20,29 @@ CREATE TABLE collection (
   FOREIGN KEY (user) REFERENCES user(username)
 );
 
+CREATE TABLE snapshot (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  idCollection INTEGER NOT NULL,
+  snapDate DATE NOT NULL,
+  cardsNumber INT NOT NULL,
+  totalValue FLOAT NOT NULL,
+  FOREIGN KEY (idCollection) REFERENCES collection(id)
+);
+
 CREATE TABLE contain (
-  idCollection INTEGER,
-  cardCode CHARACTER(10),
-  rarity CHARACTER(10),
-  nbcopy INT,
+  idCollection INTEGER NOT NULL,
+  cardCode CHARACTER(10) NOT NULL,
+  rarity CHARACTER(10) NOT NULL,
+  nbcopy INT NOT NULL,
   FOREIGN KEY (idCollection) REFERENCES collection(id),
   FOREIGN KEY (cardCode, rarity) REFERENCES carte(code, rarity)
 );
 
 CREATE TABLE card (
-  code CHARACTER(10) ,
-  rarity CHARACTER(10),
-  name VARCHAR(200),
-  price FLOAT,
+  code CHARACTER(10) NOT NULL,
+  rarity CHARACTER(10) NOT NULL,
+  name VARCHAR(200) NOT NULL,
+  price FLOAT NOT NULL,
   FOREIGN KEY (rarity) REFERENCES rarity(code),
   PRIMARY KEY (code, rarity)
 );
@@ -54,19 +64,3 @@ VALUES
   ('GH', 'Ghost Rare'),
   ('GR', 'Gold Rare'),
   ('QCSE', 'Quarter Century Secret Rare');
-
-INSERT OR REPLACE INTO card
-VALUES
-  ('code1', 'C', 'Carte1', 10.2),
-  ('code2', 'C', 'Carte2', 10.5);
-
-INSERT OR REPLACE INTO user(username, password)
-VALUES ('Trahald', 'test');
-
-INSERT OR REPLACE INTO collection(name, user)
-VALUES ('Nom1', 'Trahald');
-
-INSERT OR REPLACE INTO contain 
-VALUES
-  (1, 'code1', 'C', 1),
-  (1, 'code2', 'C', 3);

@@ -4,6 +4,7 @@
 
 {% block navbar %}
     <div class="navbar">
+        <a href="/"><i class="fa fa-fw fa-home"></i> Home</a>
         {% if session['user_id'] %}
             <a href="/auth/logout" class="split"><i class="fa-solid fa-user-xmark"></i> Logout</a>
         {% else %}
