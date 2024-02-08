@@ -77,7 +77,7 @@ def get_collection_content(id):
         ' WHERE contain.idCollection = collection.id AND collection.id = ?'
         ' AND contain.cardcode = card.code'
         ' ORDER BY card.price DESC', 
-        (id)
+        (id,)
     ).fetchall()
 
     return collection
@@ -86,15 +86,17 @@ def get_collection_content(id):
 @bp.route('/<id>')
 @login_required
 def index(id):
+    """
+    Main page of the collection.
+    """
 
     cards = get_collection_content(id)
-    total = get_cards_number(id)
-    value = get_collection_value(id)
-
-    if cards is None:
-        return render_template('collection/index.html', count=0, value=0)
+    
+    if not cards:
+        return render_template('collection/index.html', count=0, value=0, id=id)
     else:
-        # count=len(cards) value=round(value, 2)
+        total = get_cards_number(id)
+        value = get_collection_value(id)
         return render_template('collection/index.html', cards=cards, count=total, value=round(value, 2), id=id)
 
 
@@ -234,3 +236,23 @@ def insert_from_csv(id):
         os.remove(f.filename)
         db.commit()
     return redirect("/collection/" + str(id))
+
+
+@bp.route('/<id>/stats')
+@login_required
+def stats(id):
+    """
+    Create and display charts.
+    """
+    rarities = get_db().execute('SELECT code FROM rarity').fetchall()
+    labels = []
+    data = []
+    
+    for rarity in rarities:
+        cards_count = get_db().execute('SELECT COUNT(cardCode) AS number FROM contain'
+                                       ' WHERE rarity = ? AND idCollection = ?',
+                                        (rarity['code'], id)).fetchone()
+        labels.append(rarity["code"])
+        data.append(cards_count["number"])
+        
+    return render_template('collection/stats.html', labels=labels, data=data, id=id)

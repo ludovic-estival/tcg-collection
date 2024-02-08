@@ -2,6 +2,20 @@
 
 {% block title %}Add a card{% endblock %}
 
+{% block navbar %}
+    <div class="navbar">
+        <a href="/"><i class="fa fa-fw fa-home"></i> Home</a>
+        <a href="/collection/{{ id }}"><i class="fa-solid fa-box-archive"></i> Collection</a>
+        <a href="/collection/{{ id }}/stats"><i class="fa-solid fa-chart-simple"></i> Statistics</a>
+        {% if session['user_id'] %}
+            <a href="/auth/logout" class="split"><i class="fa-solid fa-user-xmark"></i> Logout</a>
+        {% else %}
+            <a href="/auth/login" class="split"><i class="fa-solid fa-user-check"></i> Login</a>
+            <a href="/auth/register" class="split"><i class="fa-solid fa-user-plus"></i> Register</a>
+        {% endif %}
+    </div>
+{% endblock %}
+
 {% block content %}
 
   <h1>Add a card</h1>
