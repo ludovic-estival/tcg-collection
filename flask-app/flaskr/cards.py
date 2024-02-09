@@ -120,7 +120,7 @@ def create(id):
         if get_card(id, code, rarity):
             db.execute(
                 'UPDATE contain SET nbcopy = nbcopy + ?'
-                ' WHERE codeCarte = ? AND rarity = ? AND idCollection = ?',
+                ' WHERE cardCode = ? AND rarity = ? AND idCollection = ?',
                 (nbcopy, code, rarity, id))
         else:
             db.execute(

@@ -59,7 +59,7 @@ Cards by rarity:
 
 ## Run tests:
 
-- `pytest`
+- `pytest -v`
 - Measure code coverage: `coverage run -m pytest`
     - Results in terminal: `coverage report`
     - Results in HTML file: `coverage html`
