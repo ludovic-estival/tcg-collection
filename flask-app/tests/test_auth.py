@@ -19,18 +19,13 @@ def test_already_registered(client):
     assert response.headers["Location"] == "/auth/login"
 
 
-@pytest.mark.skip(reason="Test not working, to complete later.")
-def test_login_wrong_username(client, auth):
-    #assert client.get('/auth/login').status_code == 200
-    response = auth.custom_login("wronguser", "pwd")
-    assert response.headers["Location"] == "/auth/login"
-
-
-@pytest.mark.skip(reason="Test not working, to complete later.")
-def test_login_wrong_password(client, auth):
-    assert client.get('/auth/login').status_code == 200
-    response = auth.login(password="wrongpwd")
-    assert response.headers["Location"] == "/auth/login"
+@pytest.mark.parametrize(('username', 'password', 'message'), (
+    ('a', 'test', b'Incorrect username.'),
+    ('test', 'a', b'Incorrect password.'),
+))
+def test_login_wrong_username_and_pwd(auth, username, password, message):
+    response = auth.login(username, password)
+    assert message in response.data
 
     
 def test_login(client, auth):
@@ -50,3 +45,8 @@ def test_logout(client, auth):
     with client:
         auth.logout()
         assert 'user_id' not in session
+
+
+def test_login_required(client):
+    response = client.get('/create')
+    assert response.headers["Location"] == "/auth/login"

@@ -19,12 +19,6 @@ class AuthActions(object):
             data={'username': username, 'password': password}
         )
     
-    def custom_login(self, username, password):
-        return self._client.post(
-            '/auth/login',
-            data={'username': username, 'password': password}
-        )
-    
     def logout(self):
         return self._client.get('/auth/logout')
 

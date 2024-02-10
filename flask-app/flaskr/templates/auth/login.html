@@ -27,6 +27,10 @@
         <p>Please fill in this form to login to your account.</p>
         <hr>
 
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+
         <label for="username"><b>Username</b></label>
         <input type="text" name="username" id="username" placeholder="Enter Username" required>
 

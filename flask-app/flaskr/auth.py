@@ -1,7 +1,7 @@
 import functools
 
 from flask import (
-    Blueprint, g, redirect, render_template, request, session, url_for
+    Blueprint, g, redirect, render_template, request, session, url_for, flash
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -53,6 +53,8 @@ def login():
             session['user_id'] = user['id']
             return redirect('/')
         
+        return render_template('auth/login.html', error=error)
+    
     return render_template('auth/login.html')
 
 
