@@ -4,8 +4,11 @@ import pytest
 
 from flaskr import create_app
 from flaskr.db import get_db, init_db
+from pathlib import Path
 
-with open(os.path.join(os.path.dirname(__file__), 'data.sql'), 'rb') as f:
+sql_script = Path(__file__).parent / "resources" / "data.sql"
+
+with open(os.path.join(os.path.dirname(__file__), sql_script), 'rb') as f:
     _data_sql = f.read().decode('utf8')
 
 

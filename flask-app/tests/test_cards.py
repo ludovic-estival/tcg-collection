@@ -1,12 +1,17 @@
 import csv
 import os
 import pytest
+import io
 from flaskr.db import get_db
+from pathlib import Path
 
 
 def test_index(client, auth):
     auth.login()
     assert client.get('/collection/1').status_code == 200
+
+    auth.login("other", "test")
+    assert client.get('/collection/2').status_code == 200
 
 
 def test_stats(client, auth):
@@ -94,34 +99,29 @@ def test_copy_delete(client, app, auth):
         assert card["nbcopy"] == 1
 
 
-@pytest.mark.skip(reason="Test not working, to complete later.")
-def test_csv_import(client, app):
-    rows = [ 
-            ['MP23-FR004', 'C', 'TestCSV', '4', '1'],
-            ['MP23-FR005', 'C', 'TestCSV', '4', '1']
-            ]
+def test_csv_import(client, app, auth):
     
-    file = 'temp-csv.csv'
+    csv_file = Path(__file__).parent / "resources" / "test-csv.csv"
+
+    auth.login()
+
+    response = client.post('/collection/1/import',
+                           content_type='multipart/form-data',
+                           data={'file': (io.BytesIO(b"Wrong file"), "test.pdf")})
     
-    with open('temp-csv.csv', 'w') as f:
-        write = csv.writer(f)
-        write.writerows(rows)
+    assert response.headers["Location"] == "/collection/1"
 
-    data = {
-        'field': 'file',
-        'file': (open(file, 'rb'), file)
-    }
-
-    client.post('/import', data=data, buffered=True, content_type="multipart/form-data")
+    client.post('/collection/1/import', 
+                content_type='multipart/form-data', 
+                data={'file':( open(csv_file, 'rb'), 'temp-csv.csv')})
 
     with app.app_context():
         db = get_db()
 
-        card = db.execute("SELECT * FROM card WHERE code = 'MP23-FR004'").fetchone()
+        card = db.execute("SELECT contain.* FROM contain WHERE cardCode = 'MP23-FR004'"
+                          " AND idCollection = 1 AND rarity = 'C'").fetchone()
         assert card is not None
 
-        card = db.execute("SELECT * FROM card WHERE code = 'MP23-FR005'").fetchone()
+        card = db.execute("SELECT contain.* FROM contain WHERE cardCode = 'MP23-FR005'"
+                          " AND idCollection = 1 AND rarity = 'C'").fetchone()
         assert card is not None
-
-    os.remove('temp-csv.csv')
-

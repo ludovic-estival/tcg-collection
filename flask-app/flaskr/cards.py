@@ -3,11 +3,12 @@ import csv
 import re
 
 from flask import (
-    Blueprint, g, redirect, render_template, request, url_for
+    Blueprint, g, redirect, render_template, request, url_for, app
 )
 
 from flaskr.auth import login_required
 from flaskr.db import get_db
+from pathlib import Path
 
 bp = Blueprint('cards', __name__, url_prefix='/collection')
 
@@ -212,28 +213,33 @@ def insert_from_csv(id):
         f = request.files['file']
         
         if re.search('.csv$', f.filename) is None:
-            return redirect(url_for('cards.index'))
+            return redirect(url_for('cards.index', id=id))
         
-        f.save(f.filename)
+        csv_file = Path(__file__).parent / "static" / f.filename
+        
+        f.save(csv_file)
+
         db = get_db()
 
-        with open(f.filename, 'rt', encoding='UTF-8') as file:
+        with open(csv_file, 'rt', encoding='UTF-8') as file:
             reader = csv.reader(file)
             data = list(reader)
         
         for card in data:
+
+            if(len(card) != 5):
+                continue
+
             if isinstance(card[3], str):
                 card[3] = re.sub(',', '.', card[3])
                 card[3] = float(card[3])
 
             copy = card.pop(len(card)-1)
 
-            # code rarity name price --> card 
-            # code rarity copy --> contain
             db.execute("INSERT INTO card VALUES (?, ?, ?, ?)", card)
             db.execute("INSERT INTO contain VALUES (?, ?, ?, ?)", (id, card[0], card[1], copy))
-
-        os.remove(f.filename)
+            
+        os.remove(csv_file)
         db.commit()
     return redirect("/collection/" + str(id))
 
