@@ -1,16 +1,11 @@
 @font-face {
-    font-family: BlenderProBold;
-    src: url("../fonts/BlenderPro-Bold.ttf") format('truetype');
-}
-
-@font-face {
-    font-family: BlenderProBook;
-    src: url("../fonts/BlenderPro-Book.ttf") format('truetype');
-}
-
-@font-face {
     font-family: Refinery;
     src: url("../fonts/Refinery-25-Black.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: Tisa;
+    src: url("../fonts/Tisa-Sans-Pro-Bold.ttf") format('truetype');
 }
 
 :root {
@@ -24,7 +19,7 @@
   
 body {
     margin: 0;
-    font-family: BlenderProBold;
+    font-family: AndyBold;
     background-color: black;
 }
 
