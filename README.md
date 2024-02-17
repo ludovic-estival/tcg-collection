@@ -21,6 +21,7 @@ The goal of this app is to manage a card collection, no matter the game (YGO, MT
 - Calculation of collection value :white_check_mark:
 - Show number of cards by rarity :white_check_mark:
 - Add account connection and registration :white_check_mark:
+- Search cards by code or name :white_check_mark:
 - Show evolution of prices for the collection
 - Show card image
 - Sort cards by card attributes in ascending/descending order
