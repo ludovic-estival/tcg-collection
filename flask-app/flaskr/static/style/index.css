@@ -66,6 +66,17 @@
     margin: 2%;
 }
 
+.search-bar {
+    margin-top: 2%;
+    margin-bottom: 2%;
+    padding: 5px;
+    
+    input {
+        font-size: 18px;
+        width: 80%;
+    }
+}
+
 table, th, td {
     margin-top: 1%;
     border: 1px solid;

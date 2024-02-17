@@ -38,7 +38,12 @@
             <!-- Table for cards management -->
             <div class="collection-content">
                 <h1>My collection</h1>
-                
+
+                <form action="/collection/{{ id }}/search" method="post" class="search-bar">
+                    <input type="text" name="keyword" placeholder="Search a card by name or code">
+                    <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+
                 <table>
                     <tr>
                         <th>Code</th>
@@ -63,7 +68,7 @@
             <div class="collection-content">
                 <h1>Import cards from a CSV file</h1>
                 <div class="form-container">
-                    <form action="/collection/{{id}}/import" method="post" enctype="multipart/form-data">
+                    <form action="/collection/{{ id }}/import" method="post" enctype="multipart/form-data">
                         <label for="file"><i class="fa-solid fa-file-csv"></i> File: </label>
                         <input type="file" name="file" maxlength="100" required>
                         <div class="tooltip">CSV informations
