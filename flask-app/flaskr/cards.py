@@ -112,24 +112,21 @@ def index(id):
         return render_template('collection/index.html', cards=cards, count=total, value=round(value, 2), id=id)
 
 
-@bp.route('/<id>/search/', methods=('POST','GET'))
+@bp.route('/<id>/search', methods=('POST','GET'))
 def search(id):
 
     if request.method == 'POST':
-        try:
-            cards = search_cards(id, request.form['keyword'])
-            total = get_cards_number(id)
-            value = get_collection_value(id)
+        
+        cards = search_cards(id, request.form['keyword'])
+        total = get_cards_number(id)
+        value = get_collection_value(id)
 
-            if not cards:
-                return render_template('collection/index.html', id=id, count=total, value=round(value, 2),)
-            else:
-                
-                return render_template('collection/index.html', cards=cards, id=id, count=total, value=round(value, 2),)
-        except Exception as e:
-            print(e)
-            return redirect("/collection/" + str(id))
-    
+        if not cards:
+            return render_template('collection/index.html', id=id, count=total, value=round(value, 2),)
+        else:
+            return render_template('collection/index.html', cards=cards, id=id, count=total, value=round(value, 2),)
+    return redirect("/collection/" + str(id))
+
 
 @bp.route('/<id>/create', methods=('GET', 'POST'))
 @login_required

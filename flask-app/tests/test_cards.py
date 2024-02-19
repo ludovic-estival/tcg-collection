@@ -125,3 +125,12 @@ def test_csv_import(client, app, auth):
         card = db.execute("SELECT contain.* FROM contain WHERE cardCode = 'MP23-FR005'"
                           " AND idCollection = 1 AND rarity = 'C'").fetchone()
         assert card is not None
+
+
+def test_search(client, auth):
+    auth.login()
+    assert client.post('/collection/1/search', data={'keyword': 'Labrynth'}).status_code == 200
+    assert client.post('/collection/1/search', data={'keyword': 'Some card'}).status_code == 200
+
+    #response = client.post('/collection/1/search')
+    #assert response.headers["Location"] == "/collection/1"

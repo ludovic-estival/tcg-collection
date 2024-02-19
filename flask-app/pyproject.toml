@@ -8,8 +8,7 @@ description = "Basic app to manage a card collection"
 dependencies = [
     "flask",
     "pytest",
-    "coverage",
-    "bokeh"
+    "coverage"
 ]
 
 [build-system]
